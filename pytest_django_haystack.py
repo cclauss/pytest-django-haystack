@@ -27,7 +27,10 @@ def _haystack_marker(request):
     if marker:
         from pytest_django.lazy_django import skip_if_no_django
         from django.core.management import call_command
-        request.getfuncargvalue('db')
+        try:
+            request.getfixturevalue('db')
+        except AttributeError:
+            request.getfuncargvalue('db')
 
         # optional haystack connection parameter
         # if specified, pass to clear_index and rebuild_index
